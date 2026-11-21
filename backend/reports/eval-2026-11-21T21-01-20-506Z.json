@@ -1,0 +1,22 @@
+{
+  "model": "gemini-3.8-flash",
+  "calls": 1,
+  "results": [
+    {
+      "k": "P1",
+      "l": "fr",
+      "r": 1,
+      "label": "Sfax, aride, pluvial",
+      "cached": false,
+      "findings": [
+        {
+          "sev": "majeur",
+          "code": "APPEL_ECHOUE",
+          "msg": "Gemini HTTP 503 - This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later."
+        }
+      ],
+      "verdict": "ECHEC",
+      "appGuardAccepts": null
+    }
+  ]
+}

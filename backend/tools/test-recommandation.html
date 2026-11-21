@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tunizit – Test recommandation</title>
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 760px; margin: 24px auto; padding: 0 16px; color: #1b2b1b; }
+  h1 { font-size: 22px; } h2 { font-size: 17px; margin-top: 28px; }
+  fieldset { border: 1px solid #c9d6c9; border-radius: 8px; margin-bottom: 16px; padding: 12px 16px; }
+  label { display: block; margin: 8px 0 2px; font-size: 14px; }
+  input, select { width: 100%; padding: 7px; font-size: 14px; box-sizing: border-box; }
+  button { padding: 9px 14px; margin: 8px 6px 0 0; font-size: 14px; cursor: pointer; border-radius: 6px; border: 1px solid #2d6a2d; background: #2d6a2d; color: #fff; }
+  button.alt { background: #fff; color: #2d6a2d; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .card { border: 1px solid #c9d6c9; border-radius: 10px; padding: 12px 16px; margin: 10px 0; }
+  .score { font-size: 24px; font-weight: bold; color: #2d6a2d; }
+  .ok { color: #1c6b1c; } .warn { color: #a05a00; }
+  .status { margin-top: 8px; font-size: 14px; }
+  .err { color: #b00020; }
+  pre { background: #f3f6f3; padding: 10px; overflow: auto; font-size: 12px; border-radius: 6px; }
+  .badge { background: #fff3cd; border-radius: 4px; padding: 2px 6px; font-size: 12px; }
+</style>
+</head>
+<body>
+<h1>Tunizit – Test de la recommandation</h1>
+
+<h2>1. Connexion</h2>
+<fieldset>
+  <label>URL de l'API Node</label>
+  <input id="api" value="http://localhost:5001">
+  <label>Supabase URL (Project URL)</label>
+  <input id="surl" placeholder="https://xxxx.supabase.co">
+  <label>Clé publique Supabase (anon / publishable) – PAS la clé secrète</label>
+  <input id="skey" placeholder="eyJ... ou sb_publishable_...">
+  <div class="row">
+    <div><label>Email de test</label><input id="email" type="email"></div>
+    <div><label>Mot de passe</label><input id="pwd" type="password"></div>
+  </div>
+  <button onclick="login()">Se connecter</button>
+  <div id="loginStatus" class="status"></div>
+</fieldset>
+
+<h2>2. Scénarios rapides</h2>
+<button class="alt" onclick="scenario('beja')">Nord humide (Béja)</button>
+<button class="alt" onclick="scenario('sfax')">Sud aride (Sfax)</button>
+<button class="alt" onclick="scenario('sec')">Trop sec (100 mm)</button>
+<button class="alt" onclick="scenario('invalide')">Sol invalide</button>
+
+<h2>3. Formulaire</h2>
+<fieldset>
+  <div class="row">
+    <div><label>Gouvernorat</label><input id="gouvernorat" value="Béja"></div>
+    <div><label>Pluviométrie annuelle (mm)</label><input id="pluvio" type="number" value="600"></div>
+    <div><label>Sol</label>
+      <select id="sol"><option>sableux</option><option selected>limoneux</option><option>argileux</option><option>calcaire</option><option>caillouteux</option><option>x_invalide</option></select></div>
+    <div><label>Drainage</label>
+      <select id="drainage"><option>bon</option><option selected>moyen</option><option>mauvais</option></select></div>
+    <div><label>Eau</label>
+      <select id="eau"><option selected>pluvial</option><option>appoint</option><option>reguliere</option></select></div>
+    <div><label>Objectif</label>
+      <select id="objectif"><option selected>huile</option><option>table</option><option>les_deux</option></select></div>
+    <div><label>Gel</label>
+      <select id="gel"><option value="">(non précisé)</option><option>aucun</option><option selected>rare</option><option>frequent</option></select></div>
+    <div><label>Salinité du sol</label>
+      <select id="salinite"><option value="">(non précisé)</option><option>faible</option><option>moyenne</option><option>elevee</option></select></div>
+  </div>
+  <button onclick="envoyer()">Obtenir les recommandations</button>
+  <div id="status" class="status"></div>
+</fieldset>
+
+<h2>4. Résultats</h2>
+<div id="results"></div>
+<pre id="raw" hidden></pre>
+
+<script>
+let token = null;
+const $ = (id) => document.getElementById(id);
+
+async function login() {
+  const st = $("loginStatus");
+  st.className = "status"; st.textContent = "Connexion...";
+  try {
+    const r = await fetch($("surl").value.trim().replace(/\/$/, "") + "/auth/v1/token?grant_type=password", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", apikey: $("skey").value.trim() },
+      body: JSON.stringify({ email: $("email").value.trim(), password: $("pwd").value }),
+    });
+    const j = await r.json();
+    if (!r.ok) throw new Error(j.error_description || j.msg || JSON.stringify(j));
+    token = j.access_token;
+    st.className = "status ok"; st.textContent = "Connecté ✔";
+  } catch (e) {
+    token = null; st.className = "status err"; st.textContent = "Échec : " + e.message;
+  }
+}
+
+function setForm(v) { for (const k in v) $(k).value = v[k]; }
+function scenario(n) {
+  const base = { drainage: "moyen", eau: "pluvial", objectif: "huile", gel: "rare", salinite: "" };
+  if (n === "beja") setForm({ ...base, gouvernorat: "Béja", pluvio: 600, sol: "limoneux" });
+  if (n === "sfax") setForm({ ...base, gouvernorat: "Sfax", pluvio: 220, sol: "sableux" });
+  if (n === "sec") setForm({ ...base, gouvernorat: "Sfax", pluvio: 100, sol: "sableux" });
+  if (n === "invalide") setForm({ ...base, gouvernorat: "Sfax", pluvio: 220, sol: "x_invalide" });
+}
+
+function add(parent, tag, text, cls) {
+  const el = document.createElement(tag);
+  if (text != null) el.textContent = text;
+  if (cls) el.className = cls;
+  parent.appendChild(el);
+  return el;
+}
+
+async function envoyer() {
+  const st = $("status"), out = $("results"), raw = $("raw");
+  out.textContent = ""; raw.hidden = true; st.className = "status";
+  if (!token) { st.className = "status err"; st.textContent = "Connectez-vous d'abord (étape 1)."; return; }
+
+  const body = {};
+  for (const k of ["gouvernorat", "sol", "drainage", "eau", "objectif", "gel", "salinite"]) {
+    if ($(k).value) body[k] = $(k).value;
+  }
+  if ($("pluvio").value !== "") body.pluvio = Number($("pluvio").value);
+
+  st.textContent = "Envoi...";
+  try {
+    const r = await fetch($("api").value.replace(/\/$/, "") + "/api/recommendations/varieties", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: "Bearer " + token },
+      body: JSON.stringify(body),
+    });
+    const j = await r.json();
+    raw.textContent = "HTTP " + r.status + "\n" + JSON.stringify(j, null, 2);
+    raw.hidden = false;
+
+    if (!r.ok) {
+      st.className = "status err";
+      st.textContent = "Erreur " + r.status + " : " + (j.errors ? j.errors.join(" ; ") : j.error);
+      return;
+    }
+    st.className = "status ok"; st.textContent = "Réponse reçue ✔ (HTTP " + r.status + ")";
+    if (j.valeurs_par_defaut?.length) add(out, "p", "Valeurs par défaut utilisées : " + j.valeurs_par_defaut.join(", "), "warn");
+    if (j.message) add(out, "p", j.message, "warn");
+
+    j.resultats.forEach((v) => {
+      const c = add(out, "div", null, "card");
+      add(c, "div", v.score + " / 100", "score");
+      const t = add(c, "strong", v.variete);
+      if (!v.verified) add(c, "span", " Données à valider", "badge");
+      add(c, "div", "Pourquoi elle est proposée :");
+      v.raisons.forEach((x) => add(c, "div", "✅ " + x, "ok"));
+      if (v.limites.length) add(c, "div", "Contraintes :");
+      v.limites.forEach((x) => add(c, "div", "⚠️ " + x, "warn"));
+    });
+    if (j.avertissement) add(out, "p", j.avertissement);
+  } catch (e) {
+    st.className = "status err";
+    st.textContent = "Impossible de joindre l'API (" + e.message + "). Le serveur tourne-t-il ?";
+  }
+}
+</script>
+</body>
+</html>

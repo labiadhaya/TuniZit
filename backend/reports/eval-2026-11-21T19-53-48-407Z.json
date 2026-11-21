@@ -1,0 +1,198 @@
+{
+  "model": "gemini-3.8-flash",
+  "calls": 2,
+  "results": [
+    {
+      "k": "P1",
+      "l": "fr",
+      "r": 1,
+      "label": "Sfax, aride, pluvial",
+      "cached": false,
+      "findings": [
+        {
+          "sev": "majeur",
+          "code": "APPEL_ECHOUE",
+          "msg": "This operation was aborted"
+        }
+      ],
+      "verdict": "ECHEC",
+      "appGuardAccepts": null
+    },
+    {
+      "k": "P1",
+      "l": "ar",
+      "r": 1,
+      "label": "Sfax, aride, pluvial",
+      "cached": false,
+      "findings": [
+        {
+          "sev": "majeur",
+          "code": "APPEL_ECHOUE",
+          "msg": "Gemini HTTP 503"
+        }
+      ],
+      "verdict": "ECHEC",
+      "appGuardAccepts": null
+    },
+    {
+      "k": "P1",
+      "l": "ar_tn",
+      "r": 1,
+      "label": "Sfax, aride, pluvial",
+      "cached": false,
+      "findings": [
+        {
+          "sev": "majeur",
+          "code": "APPEL_ECHOUE",
+          "msg": "abandon : 2 echecs consecutifs"
+        }
+      ],
+      "verdict": "ECHEC",
+      "appGuardAccepts": null
+    },
+    {
+      "k": "P2",
+      "l": "fr",
+      "r": 1,
+      "label": "Bizerte, humide, drainage faible",
+      "cached": false,
+      "findings": [
+        {
+          "sev": "majeur",
+          "code": "APPEL_ECHOUE",
+          "msg": "abandon : 2 echecs consecutifs"
+        }
+      ],
+      "verdict": "ECHEC",
+      "appGuardAccepts": null
+    },
+    {
+      "k": "P2",
+      "l": "ar",
+      "r": 1,
+      "label": "Bizerte, humide, drainage faible",
+      "cached": false,
+      "findings": [
+        {
+          "sev": "majeur",
+          "code": "APPEL_ECHOUE",
+          "msg": "abandon : 2 echecs consecutifs"
+        }
+      ],
+      "verdict": "ECHEC",
+      "appGuardAccepts": null
+    },
+    {
+      "k": "P2",
+      "l": "ar_tn",
+      "r": 1,
+      "label": "Bizerte, humide, drainage faible",
+      "cached": false,
+      "findings": [
+        {
+          "sev": "majeur",
+          "code": "APPEL_ECHOUE",
+          "msg": "abandon : 2 echecs consecutifs"
+        }
+      ],
+      "verdict": "ECHEC",
+      "appGuardAccepts": null
+    },
+    {
+      "k": "P3",
+      "l": "fr",
+      "r": 1,
+      "label": "Kairouan, irrigué, eau salée",
+      "cached": false,
+      "findings": [
+        {
+          "sev": "majeur",
+          "code": "APPEL_ECHOUE",
+          "msg": "abandon : 2 echecs consecutifs"
+        }
+      ],
+      "verdict": "ECHEC",
+      "appGuardAccepts": null
+    },
+    {
+      "k": "P3",
+      "l": "ar",
+      "r": 1,
+      "label": "Kairouan, irrigué, eau salée",
+      "cached": false,
+      "findings": [
+        {
+          "sev": "majeur",
+          "code": "APPEL_ECHOUE",
+          "msg": "abandon : 2 echecs consecutifs"
+        }
+      ],
+      "verdict": "ECHEC",
+      "appGuardAccepts": null
+    },
+    {
+      "k": "P3",
+      "l": "ar_tn",
+      "r": 1,
+      "label": "Kairouan, irrigué, eau salée",
+      "cached": false,
+      "findings": [
+        {
+          "sev": "majeur",
+          "code": "APPEL_ECHOUE",
+          "msg": "abandon : 2 echecs consecutifs"
+        }
+      ],
+      "verdict": "ECHEC",
+      "appGuardAccepts": null
+    },
+    {
+      "k": "P5",
+      "l": "fr",
+      "r": 1,
+      "label": "Tozeur, super-intensif",
+      "cached": false,
+      "findings": [
+        {
+          "sev": "majeur",
+          "code": "APPEL_ECHOUE",
+          "msg": "abandon : 2 echecs consecutifs"
+        }
+      ],
+      "verdict": "ECHEC",
+      "appGuardAccepts": null
+    },
+    {
+      "k": "P5",
+      "l": "ar",
+      "r": 1,
+      "label": "Tozeur, super-intensif",
+      "cached": false,
+      "findings": [
+        {
+          "sev": "majeur",
+          "code": "APPEL_ECHOUE",
+          "msg": "abandon : 2 echecs consecutifs"
+        }
+      ],
+      "verdict": "ECHEC",
+      "appGuardAccepts": null
+    },
+    {
+      "k": "P5",
+      "l": "ar_tn",
+      "r": 1,
+      "label": "Tozeur, super-intensif",
+      "cached": false,
+      "findings": [
+        {
+          "sev": "majeur",
+          "code": "APPEL_ECHOUE",
+          "msg": "abandon : 2 echecs consecutifs"
+        }
+      ],
+      "verdict": "ECHEC",
+      "appGuardAccepts": null
+    }
+  ]
+}
