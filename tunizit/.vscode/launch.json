@@ -1,0 +1,11 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Calendrier (dev)",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/dev/calendar_dev_main.dart"
+    }
+  ]
+}
