@@ -2,6 +2,7 @@ import 'package:material_ui/material_ui.dart';
 import '../../../core/theme.dart';
 import '../data/form_options.dart';
 
+// بطاقة اختيار واحدة؛ يتبدّل شكلها وتظهر علامة كي تكون مختارة.
 class OptionTile extends StatelessWidget {
   const OptionTile({
     super.key,
@@ -94,7 +95,7 @@ class OptionTile extends StatelessWidget {
   }
 }
 
-// Un titre + une liste de grosses tuiles de choix.
+// عنوان مجموعة وأسفله الاختيارات متاع السؤال.
 class OptionGroup extends StatelessWidget {
   const OptionGroup({
     super.key,

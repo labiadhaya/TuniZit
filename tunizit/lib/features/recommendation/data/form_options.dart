@@ -1,6 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 
 class Opt {
+  // اختيار واحد في الفورم: قيمة داخلية، نصّ ظاهر، ومساعدة/أيقونة اختيارية.
   const Opt(this.value, this.label, {this.help, this.icon});
   final String value;
   final String label;
@@ -9,6 +10,7 @@ class Opt {
 }
 
 String labelFor(List<Opt> opts, String? v) {
+  // نحوّل القيمة اللي يخزّنها الـ API للاسم اللي يتعرض للمستخدم.
   if (v == null) return 'Non précisé';
   for (final o in opts) {
     if (o.value == v) return o.label;
@@ -23,6 +25,7 @@ const gouvernorats = <String>[
   'Sousse', 'Tataouine', 'Tozeur', 'Tunis', 'Zaghouan',
 ];
 
+// الاختيارات الجاهزة لأسئلة المناخ والتربة والماء والإنتاج.
 const gelOpts = <Opt>[
   Opt('aucun', 'Aucun', icon: Icons.wb_sunny_outlined),
   Opt('rare', 'Rare',

@@ -6,6 +6,7 @@ import '../models/variety_result.dart';
 import '../services/recommendation_service.dart';
 import '../widgets/score_gauge.dart';
 
+// صفحة النتائج: الترتيب والنسب والتفاصيل، ومعاهم تفسير باللغة المختارة.
 class RecommendationResultsScreen extends StatefulWidget {
   const RecommendationResultsScreen({super.key, required this.response});
 
@@ -29,12 +30,14 @@ class _RecommendationResultsScreenState
   void initState() {
     super.initState();
     final r = widget.response;
+    // نطلبو التفسير بالفرنسية تلقائيا كان فما نتائج محفوظة عندها معرّف.
     if (r.requestId != null && r.resultats.isNotEmpty) {
       WidgetsBinding.instance.addPostFrameCallback((_) => _explain('fr'));
     }
   }
 
   Future<void> _explain(String lang) async {
+    // نطلبو تفسير للطلب المحفوظ؛ رقم ticket يمنع ردّ قديم يغطّي على الأحدث.
     final id = widget.response.requestId;
     if (id == null) return;
     final ticket = ++_requestCounter;
@@ -61,6 +64,7 @@ class _RecommendationResultsScreenState
   }
 
   List<_TagData> _tags(Map<String, dynamic> i) {
+    // نحوّلو معطيات الأرض لعلامات صغيرة تظهر في ملخّص النتائج.
     final out = <_TagData>[];
     void add(IconData icon, String? text) {
       if (text != null && text.isNotEmpty) out.add(_TagData(icon, text));
@@ -145,6 +149,7 @@ class _RecommendationResultsScreenState
   }
 
   Widget _emptyState(BuildContext context) {
+    // حالة خاصة وقت النظام ما يلقى حتى صنف مناسب.
     return AppCard(
       child: Column(
         children: [
@@ -170,7 +175,7 @@ class _RecommendationResultsScreenState
     );
   }
 
-  // Tableau comparatif construit uniquement à partir des données reçues.
+  // مقارنة بسيطة بين الأصناف المعادة من الـ API؛ ما نزيدوش نحسبو بيانات جديدة.
   Widget _comparisonTable(List<VarietyResult> list) {
     TableRow header() => TableRow(
           decoration: const BoxDecoration(color: AppColors.oliveSoft),
@@ -233,6 +238,7 @@ class _RecommendationResultsScreenState
   }
 
   Widget _explanationCard(BuildContext context) {
+    // اختيار لغة الشرح، إظهار التحميل/الخطأ، وعرض جواب الذكاء الاصطناعي أو البديل.
     final t = Theme.of(context).textTheme;
     final isAi = _explanation?.isAi ?? false;
     return AppCard(
@@ -353,6 +359,7 @@ class _RecommendationResultsScreenState
 
   @override
   Widget build(BuildContext context) {
+    // يجمع ملخّص الأرض، بطاقات الأصناف، المقارنة والتحذير العام.
     final r = widget.response;
     return LangBuilder(
       builder: (context) => Scaffold(
@@ -488,6 +495,7 @@ class _Tag extends StatelessWidget {
 }
 
 class _VarietyCard extends StatelessWidget {
+  // بطاقة صنف فيها ترتيبه ونتيجته وأسباب الاقتراح والقيود المعروفة.
   const _VarietyCard({required this.v, required this.rank});
 
   final VarietyResult v;
@@ -641,6 +649,7 @@ class _BulletRow extends StatelessWidget {
 }
 
 class _VerifiedBadge extends StatelessWidget {
+  // يوضّح للمستخدم إذا بيانات الصنف راجعها خبير أو مازالت تستحقّ التثبت.
   const _VerifiedBadge({required this.verified});
 
   final bool verified;

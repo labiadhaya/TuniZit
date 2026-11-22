@@ -6,6 +6,7 @@ import '../services/recommendation_service.dart';
 import '../widgets/option_tile.dart';
 import 'recommendation_results_screen.dart';
 
+// الفورم مقسوم لأربع مراحل: المكان، التربة، الماء، وهدف الإنتاج.
 List<String> _stepTitles() => [
       AppLang.tr('Localisation', 'الموقع'),
       AppLang.tr('Sol', 'التربة'),
@@ -27,6 +28,7 @@ const _stepIcons = [
   Icons.eco_outlined,
 ];
 
+// يجمع معطيات قطعة الأرض ويتثبت منها قبل ما يطلب التوصيات من الـ API.
 class RecommendationFormScreen extends StatefulWidget {
   const RecommendationFormScreen({super.key});
 
@@ -62,6 +64,7 @@ class _RecommendationFormScreenState extends State<RecommendationFormScreen> {
       double.tryParse(_pluvio.text.trim().replaceAll(',', '.'));
 
   String? _validateStep() {
+    // كل مرحلة عندها شروطها؛ ما نعدّيوش للّي بعدها كان الإجابات اللازمة موجودة.
     switch (_step) {
       case 0:
         if (_gouvernorat == null) {
@@ -125,6 +128,7 @@ class _RecommendationFormScreenState extends State<RecommendationFormScreen> {
   }
 
   void _setEau(String? v) {
+    // كي تكون الزراعة بالمطر فقط، ننحّيو اختيارات الريّ اللي ما عادش تنطبق.
     setState(() {
       _eau = v;
       if (v == 'pluvial') {
@@ -138,6 +142,7 @@ class _RecommendationFormScreenState extends State<RecommendationFormScreen> {
   }
 
   Future<void> _pickGouvernorat() async {
+    // نفتح قائمة فيها بحث باش اختيار الولاية يكون أسهل.
     final picked = await showModalBottomSheet<String>(
       context: context,
       isScrollControlled: true,
@@ -161,6 +166,7 @@ class _RecommendationFormScreenState extends State<RecommendationFormScreen> {
       _error = null;
     });
 
+    // الحقول الأساسية ديما تتبعث؛ الاختيارات الاختيارية نبعثوها كان تعمّرت.
     final form = <String, dynamic>{
       'gouvernorat': _gouvernorat,
       'pluvio': _parsePluvio(),
@@ -208,6 +214,7 @@ class _RecommendationFormScreenState extends State<RecommendationFormScreen> {
   }
 
   List<Widget> _buildStep(BuildContext context) {
+    // محتوى كل مرحلة يتبدّل حسب _step؛ الاختيارات معرفة في form_options.dart.
     final titleStyle = Theme.of(context)
         .textTheme
         .titleMedium
@@ -367,6 +374,7 @@ class _RecommendationFormScreenState extends State<RecommendationFormScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // يعرض شريط التقدّم، أسئلة المرحلة، الأخطاء وأزرار السابق/التالي.
     return LangBuilder(builder: (context) {
       final isLast = _step == _stepTitles().length - 1;
       final scheme = Theme.of(context).colorScheme;
@@ -484,6 +492,7 @@ class _RecommendationFormScreenState extends State<RecommendationFormScreen> {
 }
 
 class _StepHeader extends StatelessWidget {
+  // يبيّن رقم المرحلة الحالية والسؤال المرتبط بيها.
   const _StepHeader({required this.step});
 
   final int step;
@@ -608,6 +617,7 @@ class _PickerField extends StatelessWidget {
 }
 
 String _norm(String s) {
+  // نحيّو تأثير الهمزات/اللكنات وقت البحث في أسماء الولايات.
   const from = 'àâäéèêëîïôöùûüç';
   const to = 'aaaeeeeiioouuuc';
   var r = s.toLowerCase();
@@ -631,6 +641,7 @@ class _GouvernoratSheetState extends State<_GouvernoratSheet> {
 
   @override
   Widget build(BuildContext context) {
+    // القائمة تتفلتر مباشرة حسب النصّ المكتوب، وتنجم تختار ولاية منها.
     final list = gouvernorats
         .where((g) => _norm(g).contains(_norm(_q.trim())))
         .toList();

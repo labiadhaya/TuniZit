@@ -1,14 +1,15 @@
 import 'package:material_ui/material_ui.dart';
 import 'theme.dart';
 
-// Langue de l'interface (FR / AR). Aucune dépendance externe.
+// حالة لغة الواجهة: false للفرنسية و true للعربية.
 class AppLang {
   static final ValueNotifier<bool> isAr = ValueNotifier<bool>(false);
   static bool get ar => isAr.value;
+  // ترجع النص المناسب حسب اللغة المختارة.
   static String tr(String fr, String arabic) => isAr.value ? arabic : fr;
 }
 
-// Reconstruit son contenu quand la langue change.
+// يعاود يبني الواجهة اللي داخلو كي المستخدم يبدّل اللغة.
 class LangBuilder extends StatelessWidget {
   const LangBuilder({super.key, required this.builder});
   final WidgetBuilder builder;
@@ -22,7 +23,7 @@ class LangBuilder extends StatelessWidget {
   }
 }
 
-// Sélecteur FR | AR en forme de pilule.
+// زرّ تبديل اللغة بين الفرنسية والعربية.
 class LangSwitch extends StatelessWidget {
   const LangSwitch({super.key});
 
@@ -70,7 +71,7 @@ class LangSwitch extends StatelessWidget {
   }
 }
 
-// Logo Tunizit : pastille dégradée + nom + sous-titre.
+// شعار Tunizit مع الاسم والجملة التعريفية.
 class TunizitLogo extends StatelessWidget {
   const TunizitLogo({super.key, this.size = 40});
   final double size;

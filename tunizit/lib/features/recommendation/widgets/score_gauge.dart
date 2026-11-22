@@ -1,6 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 import '../../../core/theme.dart';
 
+// دائرة تبيّن نسبة التوافق، ولونها يتبدّل حسب قيمة النتيجة.
 class ScoreGauge extends StatelessWidget {
   const ScoreGauge({super.key, required this.score, this.size = 60});
 
@@ -8,6 +9,7 @@ class ScoreGauge extends StatelessWidget {
   final double size;
 
   static Color colorFor(int s) {
+    // أخضر للنتيجة العالية، برتقالي للمتوسطة، وأحمر/برتقالي للضعيفة.
     if (s >= 80) return AppColors.good;
     if (s >= 60) return AppColors.medium;
     return AppColors.low;

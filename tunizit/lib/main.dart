@@ -7,6 +7,7 @@ import 'features/auth/login_screen.dart';
 import 'features/home/home_screen.dart';
 
 Future<void> main() async {
+  // نجهّزو Flutter ونتّصلو بـ Supabase قبل ما تظهر أول صفحة.
   WidgetsFlutterBinding.ensureInitialized();
   await Supabase.initialize(
     url: AppConfig.supabaseUrl,
@@ -24,7 +25,7 @@ class TunizitApp extends StatelessWidget {
       title: 'Tunizit',
       debugShowCheckedModeBanner: false,
       theme: buildAppTheme(),
-      // Bascule RTL automatiquement quand la langue arabe est choisie.
+      // كي تتبدّل اللغة للعربية، نقلبو اتجاه الواجهة من اليمين لليسار.
       builder: (context, child) => ValueListenableBuilder<bool>(
         valueListenable: AppLang.isAr,
         builder: (context, ar, _) => Directionality(
@@ -37,8 +38,8 @@ class TunizitApp extends StatelessWidget {
   }
 }
 
-// Affiche la connexion ou l'accueil selon la session Supabase.
-// (Provisoire : l'authentification definitive sera celle du module Auth.)
+// يختار الصفحة حسب حالة الدخول: ما فماش session؟ نمشيو لتسجيل الدخول،
+// وإلا نظهرو الصفحة الرئيسية.
 class AuthGate extends StatelessWidget {
   const AuthGate({super.key});
 

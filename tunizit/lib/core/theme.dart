@@ -1,6 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 
 class AppColors {
+  // ألوان التطبيق الرئيسية، باش تبقى نفس الهوية في كل الصفحات.
   static const forest = Color(0xFF2F4A1B);
   static const olive = Color(0xFF4F6F2C);
   static const oliveLight = Color(0xFF7A9A3E);
@@ -20,6 +21,7 @@ class AppShadows {
   ];
 }
 
+// يضبط الألوان والأزرار والحقول وشريط التنقّل على مستوى التطبيق الكل.
 ThemeData buildAppTheme() {
   final scheme = ColorScheme.fromSeed(
     seedColor: AppColors.olive,
@@ -99,7 +101,7 @@ ThemeData buildAppTheme() {
   );
 }
 
-// Carte blanche aux bords arrondis avec ombre légère, utilisée partout.
+// بطاقة موحّدة تتعاود في صفحات مختلفة، مع حشو وحدود وظلّ قابلين للتغيير.
 class AppCard extends StatelessWidget {
   const AppCard({
     super.key,

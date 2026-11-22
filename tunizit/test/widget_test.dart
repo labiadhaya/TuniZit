@@ -6,6 +6,7 @@ import 'package:tunizit/features/recommendation/models/variety_result.dart';
 import 'package:tunizit/features/recommendation/widgets/score_gauge.dart';
 
 void main() {
+  // اختبارات صغيرة لتحويل الاختيارات، قراءة ردّ الـ API، وعرض النتيجة.
   test('labelFor renvoie le libellé français', () {
     expect(labelFor(solOpts, 'sableux'), 'Sableux');
     expect(labelFor(solOpts, null), 'Non précisé');

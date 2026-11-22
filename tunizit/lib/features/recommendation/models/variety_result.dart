@@ -3,6 +3,7 @@ const kDefaultWarning =
 const kNoMatchMessage =
     'Conditions très contraignantes : consultez un technicien agricole.';
 
+// تمثيل صنف زيتون واحد كما يرجع من الـ API.
 class VarietyResult {
   final String id;
   final String nom;
@@ -39,6 +40,7 @@ class RecommendationResponse {
   final String avertissement;
   final Map<String, dynamic>? input;
 
+  // نحوّل JSON متاع الـ API لأنواع Dart تستعملهم صفحة النتائج.
   factory RecommendationResponse.fromJson(
     Map<String, dynamic> j, {
     Map<String, dynamic>? input,
@@ -71,6 +73,7 @@ class HistoryItem {
             .map((e) => VarietyResult.fromJson(Map<String, dynamic>.from(e as Map)))
             .toList();
 
+  // نستعمل نفس شكل النتائج كي نفتح عنصر من السجلّ القديم.
   RecommendationResponse toResponse() => RecommendationResponse(
         requestId: id,
         resultats: results,

@@ -3,6 +3,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../core/lang.dart';
 import '../../core/theme.dart';
 
+// صفحة الدخول وإنشاء حساب جديد عبر خدمة المصادقة متاع Supabase.
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -11,6 +12,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  // قيم الحقول وحالة الطلب والرسائل اللي تظهر للمستخدم.
   final _email = TextEditingController();
   final _pwd = TextEditingController();
   bool _signUp = false;
@@ -27,6 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   String _friendly(String m) {
+    // نحوّلو أخطاء Supabase المعروفة لعبارات مفهومة في الواجهة.
     if (m.contains('Invalid login credentials')) {
       return 'Email ou mot de passe incorrect.';
     }
@@ -40,6 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> _submit() async {
+    // نثبتو من المدخلات، وبعد نعملو دخول أو إنشاء حساب حسب الاختيار.
     final email = _email.text.trim();
     final pwd = _pwd.text;
     if (!email.contains('@')) {
@@ -78,6 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _message(String text, Color color, IconData icon) {
+    // نفس شكل التنبيه للأخطاء ورسائل النجاح.
     return Container(
       margin: const EdgeInsets.only(top: 12),
       padding: const EdgeInsets.all(12),

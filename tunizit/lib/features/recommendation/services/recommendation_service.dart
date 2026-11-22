@@ -6,6 +6,7 @@ import '../../../core/config.dart';
 import '../models/variety_result.dart';
 
 class ApiException implements Exception {
+  // خطأ برسالة جاهزة للعرض في الواجهة بدل تفاصيل تقنية.
   final String message;
   ApiException(this.message);
   @override
@@ -13,6 +14,7 @@ class ApiException implements Exception {
 }
 
 class RecommendationService {
+  // كل دالة هنا تمثّل عملية API يستعملها تطبيق Flutter.
   Future<RecommendationResponse> getRecommendations(
       Map<String, dynamic> form) async {
     final body = await _call('POST', '/api/recommendations/varieties',
@@ -44,6 +46,7 @@ class RecommendationService {
     Map<String, dynamic>? payload,
     Duration timeout = const Duration(seconds: 15),
   }) async {
+    // نبعثو token متاع Supabase مع كل طلب محميّ للـ backend.
     final token = Supabase.instance.client.auth.currentSession?.accessToken;
     if (token == null) throw ApiException('Vous devez vous connecter.');
 
@@ -75,6 +78,7 @@ class RecommendationService {
     } catch (_) {}
 
     if (res.statusCode == 200) return body;
+    // نفسّر أهم رموز HTTP برسائل واضحة؛ والباقي يظهر كخطأ خادم.
     if (res.statusCode == 401) {
       throw ApiException('Session expirée. Reconnectez-vous.');
     }

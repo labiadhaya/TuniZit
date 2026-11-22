@@ -10,12 +10,14 @@ import '../recommendation/services/recommendation_service.dart';
 import '../recommendation/widgets/score_gauge.dart';
 
 String _formatDate(DateTime? d) {
+  // نعرض تاريخ التوصية بالتوقيت المحلي وبصيغة سهلة للقراءة.
   if (d == null) return '';
   String two(int n) => n.toString().padLeft(2, '0');
   final l = d.toLocal();
   return '${two(l.day)}/${two(l.month)}/${l.year} ${two(l.hour)}:${two(l.minute)}';
 }
 
+// الصفحة الرئيسية: بداية بحث جديد، سجلّ التوصيات، والتنقّل بين الصفحات.
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -32,6 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    // نحمّلو سجلّ المستخدم أوّل ما تفتح الصفحة.
     _history = _service.getHistory();
   }
 
@@ -48,6 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _openForm() async {
+    // بعد ما يسكر الفورم، نحدّث السجل باش تظهر آخر توصية.
     await Navigator.of(context).push(
       MaterialPageRoute(builder: (_) => const RecommendationFormScreen()),
     );
@@ -64,6 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _onNav(int i) {
+    // عناصر الشريط: الرئيسية، بحث جديد، السجلّ، ثم تسجيل الخروج.
     switch (i) {
       case 1:
         _openForm();
@@ -311,6 +316,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _historySection(BuildContext context) {
+    // نعرض تحميل/خطأ/حالة فارغة أو قائمة التوصيات حسب نتيجة الطلب.
     return FutureBuilder<List<HistoryItem>>(
       future: _history,
       builder: (context, snap) {
